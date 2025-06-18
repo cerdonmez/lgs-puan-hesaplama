@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGS Puan Hesaplama - Lise Geçiş Sınavı Puan Hesaplayıcı</title>
+    <meta name="description"
+        content="LGS puan hesaplama aracı ile sınav puanınızı hesaplayın ve yüzdelik diliminizi öğrenin.">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --border-radius: 8px;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--gray-900);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+            font-size: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .subjects-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .subject-card {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .subject-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .subject-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--gray-900);
+        }
+
+        .subject-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .subject-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .form-input.error {
+            border-color: var(--error-color);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 2rem;
+        }
+
+        .calculate-btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calculate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--gray-200);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            font-weight: 500;
+            display: none;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            color: var(--warning-color);
+            border: 1px solid #fed7aa;
+        }
+
+        .results {
+            margin-top: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .results-header {
+            background: var(--success-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .results-header h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .results-body {
+            padding: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius);
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.125rem;
+        }
+
+        .final-score {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .final-score h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+        }
+
+        .final-score .score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .percentile-section {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 1.5rem;
+        }
+
+        .percentile-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0 0 1rem 0;
+        }
+
+        .disclaimer {
+            background: var(--warning-color);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .disclaimer h5 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .disclaimer ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .disclaimer li {
+            margin-bottom: 0.25rem;
+        }
+
+        .results-years-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .results-year-block {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            padding-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        @media (max-width: 900px) {
+            .results-years-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .subject-inputs {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .results-body {
+                padding: 1.5rem;
+            }
+        }
+
+        .results-table-wrapper {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            min-width: 600px;
+        }
+        .results-table th, .results-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            text-align: center;
+            font-size: 1rem;
+        }
+        .results-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+        }
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+        .results-table td:first-child, .results-table th:first-child {
+            text-align: left;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+        @media (max-width: 900px) {
+            .results-table {
+                min-width: 400px;
+                font-size: 0.95rem;
+            }
+        }
+
+        .subjects-table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+        .subjects-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            min-width: 400px;
+        }
+        .subjects-table th, .subjects-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+            text-align: center;
+            font-size: 1rem;
+        }
+        .subjects-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+        }
+        .subjects-table tr:last-child td {
+            border-bottom: none;
+        }
+        .subjects-table td:first-child, .subjects-table th:first-child {
+            text-align: left;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+        @media (max-width: 900px) {
+            .subjects-table {
+                min-width: 320px;
+                font-size: 0.95rem;
+            }
+        }
+
+        .results-summary {
+            display: flex;
+            gap: 2rem;
+            justify-content: flex-start;
+            align-items: center;
+            background: var(--gray-50);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+        .results-summary span {
+            flex: 1;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .results-summary {
+                flex-direction: column;
+                gap: 0.5rem;
+                font-size: 1rem;
+                padding: 0.75rem 0.5rem;
+            }
+            .results-summary span {
+                text-align: left;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>LGS Puan Hesaplayıcı</h1>
+            <p>Liselere Geçiş Sınavı puan hesaplama ve yüzdelik dilim belirleme aracı</p>
+        </header>
+
+        <main class="calculator-card">
+            <div class="card-header">
+                <h2>Sınav Bilgilerinizi Girin</h2>
+            </div>
+
+            <div class="card-body">
+                <form id="lgsForm">
+                    <div class="subjects-grid" id="subjectsGrid">
+                        <!-- Subjects will be dynamically generated -->
+                    </div>
+
+                    <button type="submit" class="calculate-btn" id="calculateBtn">
+                        Puanı Hesapla
+                    </button>
+                </form>
+
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Puanınız hesaplanıyor...</p>
+                </div>
+
+                <div id="alertContainer"></div>
+            </div>
+        </main>
+
+        <div id="results" class="results">
+            <div class="results-header">
+                <h3>LGS Puan Sonuçlarınız</h3>
+                <p>Detaylı analiz ve yüzdelik dilim bilgileriniz</p>
+            </div>
+            <div class="results-body" id="resultsBody">
+                <!-- Results will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State and Configuration
+        class LGSCalculator {
+            constructor() {
+                this.percentileData = null;
+                this.isDataLoaded = false;
+                this.examConfig = {
+                    "2020": {
+                        "baseScore": 200.26475,
+                        "coefficients": {
+                            "turkce": 3.7972533,
+                            "matematik": 5.62325,
+                            "fen": 3.3419253,
+                            "tarih": 1.41135,
+                            "din": 1.53211,
+                            "dil": 1.505325
+                        }
+                    },
+                    "2021": {
+                        "baseScore": 200.0041389,
+                        "coefficients": {
+                            "turkce": 3.4460333333,
+                            "matematik": 5.7878333333,
+                            "fen": 3.5622833333,
+                            "tarih": 1.4750888889,
+                            "din": 1.5924444444,
+                            "dil": 1.3397527778
+                        }
+                    },
+                    "2022": {
+                        "baseScore": 200.0135764,
+                        "coefficients": {
+                            "turkce": 3.9205004724,
+                            "matematik": 4.9299339624,
+                            "fen": 3.7032127364,
+                            "tarih": 1.7522674531,
+                            "din": 1.6606273581,
+                            "dil": 1.4786207551
+                        }
+                    },
+                    "2023": {
+                        "baseScore": 194.752082,
+                        "coefficients": {
+                            "turkce": 4.348683717,
+                            "matematik": 4.253881347,
+                            "fen": 4.123078077,
+                            "tarih": 1.66650784,
+                            "din": 1.899422486,
+                            "dil": 1.507575189
+                        }
+                    },
+                    "2024": {
+                        "baseScore": 196.6198,
+                        "coefficients": {
+                            "turkce": 4.107,
+                            "matematik": 4.632,
+                            "fen": 3.889,
+                            "tarih": 1.729,
+                            "din": 1.818,
+                            "dil": 1.531
+                        }
+                    }
+                };
+
+                this.subjects = [
+                    { id: 'turkce', name: 'Türkçe', questions: 20, coefficient: 'turkce' },
+                    { id: 'tarih', name: 'T.C. İnkılap Tarihi', questions: 10, coefficient: 'tarih' },
+                    { id: 'din', name: 'Din Kültürü ve Ahlak', questions: 10, coefficient: 'din' },
+                    { id: 'dil', name: 'Yabancı Dil', questions: 10, coefficient: 'dil' },
+                    { id: 'matematik', name: 'Matematik', questions: 20, coefficient: 'matematik' },
+                    { id: 'fen', name: 'Fen Bilimleri', questions: 20, coefficient: 'fen' }
+                ];
+
+                this.init();
+            }
+
+            async init() {
+                this.setupEventListeners();
+                this.renderSubjects();
+                await this.loadPercentileData();
+            }
+
+            async loadPercentileData() {
+                try {
+                    const response = await fetch('./LGSdilimler.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    this.percentileData = await response.json();
+                    this.isDataLoaded = true;
+                    console.log('Percentile data loaded successfully');
+                } catch (error) {
+                    console.error('Error loading percentile data:', error);
+                    this.showAlert('Yüzdelik dilim verileri yüklenemedi. Hesaplama sadece puan üzerinden yapılacak.', 'warning');
+                }
+            }
+
+            setupEventListeners() {
+                const form = document.getElementById('lgsForm');
+                form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+
+                // Input validation
+                document.addEventListener('input', (e) => {
+                    if (e.target.matches('.form-input')) {
+                        this.validateInput(e.target);
+                    }
+                });
+            }
+
+            renderSubjects() {
+                const container = document.getElementById('subjectsGrid');
+                // Kompakt tablo başlığı
+                let html = `<div class="subjects-table-wrapper"><table class="subjects-table"><thead><tr><th>Ders</th><th>Doğru</th><th>Yanlış</th><th>Boş</th></tr></thead><tbody>`;
+                for (const subject of this.subjects) {
+                    html += `<tr>
+                        <td>${subject.name}</td>
+                        <td><input type="number" class="form-input subject-correct" id="${subject.id}Correct" min="0" max="${subject.questions}" value="${subject.questions}" data-subject="${subject.id}" data-type="correct" required></td>
+                        <td><input type="number" class="form-input subject-wrong" id="${subject.id}Wrong" min="0" max="${subject.questions}" value="0" data-subject="${subject.id}" data-type="wrong" required></td>
+                        <td><input type="number" class="form-input subject-blank" id="${subject.id}Blank" min="0" max="${subject.questions}" value="0" data-subject="${subject.id}" data-type="blank" readonly tabindex="-1" style="background:#f3f4f6;cursor:not-allowed;"></td>
+                    </tr>`;
+                }
+                html += `</tbody></table></div>`;
+                container.innerHTML = html;
+            }
+
+            validateInput(input) {
+                const subject = input.dataset.subject;
+                const subjectConfig = this.subjects.find(s => s.id === subject);
+                const correctInput = document.getElementById(`${subject}Correct`);
+                const wrongInput = document.getElementById(`${subject}Wrong`);
+                const blankInput = document.getElementById(`${subject}Blank`);
+                const correct = parseInt(correctInput.value) || 0;
+                const wrong = parseInt(wrongInput.value) || 0;
+                // Reset error state
+                input.classList.remove('error');
+                // Validate range
+                if (correct < 0) correctInput.value = 0;
+                if (wrong < 0) wrongInput.value = 0;
+                if (correct > subjectConfig.questions) {
+                    correctInput.value = subjectConfig.questions;
+                    correctInput.classList.add('error');
+                }
+                if (wrong > subjectConfig.questions) {
+                    wrongInput.value = subjectConfig.questions;
+                    wrongInput.classList.add('error');
+                }
+                // Toplam kontrolü
+                if (correct + wrong > subjectConfig.questions) {
+                    input.classList.add('error');
+                    this.showAlert(`${subjectConfig.name} dersi için toplam cevap sayısı ${subjectConfig.questions}'i geçemez!`, 'error');
+                } else {
+                    correctInput.classList.remove('error');
+                    wrongInput.classList.remove('error');
+                    this.clearAlert();
+                }
+                // Boş otomatik hesapla
+                const blank = Math.max(0, subjectConfig.questions - correct - wrong);
+                blankInput.value = blank;
+            }
+
+            async handleFormSubmit(e) {
+                e.preventDefault();
+
+                // Validate all inputs
+                const inputs = document.querySelectorAll('.form-input');
+                let hasError = false;
+
+                inputs.forEach(input => {
+                    this.validateInput(input);
+                    if (input.classList.contains('error')) {
+                        hasError = true;
+                    }
+                });
+
+                if (hasError) {
+                    this.showAlert('Lütfen hatalı girişleri düzeltin!', 'error');
+                    return;
+                }
+
+                this.showLoading(true);
+                this.clearAlert();
+
+                try {
+                    const results = await this.calculateAllScores();
+                    this.displayAllResults(results);
+                } catch (error) {
+                    console.error('Calculation error:', error);
+                    this.showAlert('Hesaplama sırasında bir hata oluştu!', 'error');
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async calculateAllScores() {
+                const allResults = {};
+                for (const year of Object.keys(this.examConfig)) {
+                    try {
+                        allResults[year] = await this.calculateScore(year);
+                    } catch (e) {
+                        allResults[year] = null;
+                    }
+                }
+                return allResults;
+            }
+
+            async calculateScore(year) {
+                const config = this.examConfig[year];
+                const subjectResults = {};
+
+                // Calculate net scores for each subject
+                for (const subject of this.subjects) {
+                    const correct = parseInt(document.getElementById(`${subject.id}Correct`).value) || 0;
+                    const wrong = parseInt(document.getElementById(`${subject.id}Wrong`).value) || 0;
+                    const blank = subject.questions - correct - wrong;
+                    const net = Math.max(0, correct - (wrong / 3));
+
+                    subjectResults[subject.id] = {
+                        name: subject.name,
+                        questions: subject.questions,
+                        correct,
+                        wrong,
+                        blank,
+                        net: parseFloat(net.toFixed(3)),
+                        coefficient: config.coefficients[subject.coefficient],
+                        weightedScore: net * config.coefficients[subject.coefficient]
+                    };
+                }
+
+                // Calculate total scores
+                const totalNet = Object.values(subjectResults).reduce((sum, subject) => sum + subject.net, 0);
+                const totalWeighted = Object.values(subjectResults).reduce((sum, subject) => sum + subject.weightedScore, 0);
+                const rawScore = config.baseScore + totalWeighted;
+
+                // Calculate maximum possible score for normalization
+                const maxScore = config.baseScore + this.subjects.reduce((sum, subject) =>
+                    sum + (subject.questions * config.coefficients[subject.coefficient]), 0
+                );
+
+                const normalizedScore = (rawScore / maxScore) * 500;
+
+                // Calculate percentiles
+                const percentiles = {};
+                if (this.isDataLoaded && this.percentileData) {
+                    percentiles[year] = this.calculatePercentile(normalizedScore, year);
+                }
+
+                return {
+                    year,
+                    subjects: subjectResults,
+                    totals: {
+                        totalQuestions: 90,
+                        totalNet: parseFloat(totalNet.toFixed(3)),
+                        rawScore: parseFloat(rawScore.toFixed(4)),
+                        normalizedScore: parseFloat(normalizedScore.toFixed(4)),
+                        percentage: parseFloat(((totalNet / 90) * 100).toFixed(1))
+                    },
+                    percentiles
+                };
+            }
+
+            calculatePercentile(score, year) {
+                if (!this.percentileData || !this.percentileData[year]) {
+                    return null;
+                }
+
+                const yearData = this.percentileData[year];
+
+                // Find the percentile for the given score
+                for (const entry of yearData) {
+                    if (score >= entry.puan) {
+                        return parseFloat(entry.yuzdelik.toFixed(2));
+                    }
+                }
+
+                // If score is lower than the lowest recorded score
+                return parseFloat(yearData[yearData.length - 1].yuzdelik.toFixed(2));
+            }
+
+            displayAllResults(allResults) {
+                const resultsContainer = document.getElementById('results');
+                const resultsBody = document.getElementById('resultsBody');
+                // Yılları yeniden eskiye sırala
+                const years = Object.keys(this.examConfig).sort((a, b) => b - a);
+
+                // Toplam doğru, yanlış, boş hesapla
+                let totalCorrect = 0, totalWrong = 0, totalBlank = 0;
+                for (const subject of this.subjects) {
+                    const correct = parseInt(document.getElementById(`${subject.id}Correct`).value) || 0;
+                    const wrong = parseInt(document.getElementById(`${subject.id}Wrong`).value) || 0;
+                    const blank = parseInt(document.getElementById(`${subject.id}Blank`).value) || 0;
+                    totalCorrect += correct;
+                    totalWrong += wrong;
+                    totalBlank += blank;
+                }
+
+                // Özet kutusu
+                let summaryHtml = `<div class="results-summary">
+                    <span><strong>Toplam Doğru:</strong> ${totalCorrect}</span>
+                    <span><strong>Toplam Yanlış:</strong> ${totalWrong}</span>
+                    <span><strong>Toplam Boş:</strong> ${totalBlank}</span>
+                </div>`;
+
+                // Başlıklar
+                let html = summaryHtml + `<div class="results-table-wrapper"><table class="results-table"><thead><tr><th>Bilgi</th>`;
+                for (const year of years) {
+                    html += `<th>${year} LGS</th>`;
+                }
+                html += `</tr></thead><tbody>`;
+                // Ders isimleri
+                const subjectKeys = this.subjects.map(s => s.id);
+                const subjectNames = this.subjects.reduce((acc, s) => { acc[s.id] = s.name; return acc; }, {});
+                for (const subjectKey of subjectKeys) {
+                    html += `<tr><td>${subjectNames[subjectKey]}</td>`;
+                    for (const year of years) {
+                        const results = allResults[year];
+                        let value = '-';
+                        if (results && results.subjects[subjectKey] && results.subjects[subjectKey].net !== undefined && results.subjects[subjectKey].net !== null) {
+                            value = results.subjects[subjectKey].net;
+                        }
+                        html += `<td>${value}</td>`;
+                    }
+                    html += `</tr>`;
+                }
+                // Toplam Net
+                html += `<tr><td>Toplam Net</td>`;
+                for (const year of years) {
+                    const results = allResults[year];
+                    let value = '-';
+                    if (results && results.totals && results.totals.totalNet !== undefined && results.totals.totalNet !== null) {
+                        value = results.totals.totalNet;
+                    }
+                    html += `<td>${value}</td>`;
+                }
+                html += `</tr>`;
+                // Yüzde (%)
+                html += `<tr><td>Doğru Yüzdesi (%)</td>`;
+                for (const year of years) {
+                    const results = allResults[year];
+                    let value = '-';
+                    if (results && results.totals && results.totals.percentage !== undefined && results.totals.percentage !== null) {
+                        value = results.totals.percentage;
+                    }
+                    html += `<td>${value}</td>`;
+                }
+                html += `</tr>`;
+                // Puan
+                html += `<tr><td>LGS Puanı (MSP)</td>`;
+                for (const year of years) {
+                    const results = allResults[year];
+                    let value = '-';
+                    if (results && results.totals && results.totals.normalizedScore !== undefined && results.totals.normalizedScore !== null) {
+                        value = results.totals.normalizedScore;
+                    }
+                    html += `<td>${value}</td>`;
+                }
+                html += `</tr>`;
+                // Yüzdelik Dilim
+                html += `<tr><td>Yüzdelik Dilim</td>`;
+                for (const year of years) {
+                    const results = allResults[year];
+                    let yuzdelik = '-';
+                    if (results && results.percentiles && results.percentiles[year] !== undefined && results.percentiles[year] !== null) {
+                        yuzdelik = `%${results.percentiles[year]}`;
+                    }
+                    html += `<td>${yuzdelik}</td>`;
+                }
+                html += `</tr>`;
+                html += `</tbody></table></div>`;
+                // Uyarı
+                html += `<div class="disclaimer" style="margin-top:2rem;">
+                            <h5>⚠️ Önemli Uyarılar</h5>
+                            <ul>
+                                <li>Bu hesaplamalar yaklaşık değerlerdir ve bilgilendirme amaçlıdır.</li>
+                                <li>Gerçek puanınız MEB'in kullandığı detaylı formüle göre farklılık gösterebilir.</li>
+                                <li>Yüzdelik dilim tahminleri geçmiş yılların verilerine dayanmaktadır.</li>
+                                <li>Resmi sonuçlar için MEB'in açıklayacağı sonuçları bekleyiniz.</li>
+                            </ul>
+                        </div>`;
+                resultsBody.innerHTML = html;
+                resultsContainer.classList.add('active');
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            showLoading(show) {
+                const loading = document.getElementById('loading');
+                const button = document.getElementById('calculateBtn');
+
+                if (show) {
+                    loading.classList.add('active');
+                    button.disabled = true;
+                } else {
+                    loading.classList.remove('active');
+                    button.disabled = false;
+                }
+            }
+
+            showAlert(message, type = 'error') {
+                const container = document.getElementById('alertContainer');
+                container.innerHTML = `
+                    <div class="alert alert-${type} active">
+                        ${type === 'error' ? '❌' : '⚠️'} ${message}
+                    </div>
+                `;
+
+                // Auto-hide after 5 seconds
+                setTimeout(() => this.clearAlert(), 5000);
+            }
+
+            clearAlert() {
+                const container = document.getElementById('alertContainer');
+                container.innerHTML = '';
+            }
+        }
+
+        // Initialize the application when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new LGSCalculator();
+        });
+    </script>
+</body>
+
+</html>

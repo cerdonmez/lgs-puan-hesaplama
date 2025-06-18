@@ -9,581 +9,523 @@
         content="LGS puan hesaplama aracı ile sınav puanınızı hesaplayın ve yüzdelik diliminizi öğrenin.">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --success-color: #059669;
-            --warning-color: #d97706;
-            --error-color: #dc2626;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-900: #111827;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            --border-radius: 8px;
-            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --lgs-app-primary-color: #2563eb;
+            --lgs-app-primary-hover: #1d4ed8;
+            --lgs-app-success-color: #059669;
+            --lgs-app-warning-color: #d97706;
+            --lgs-app-error-color: #dc2626;
+            --lgs-app-gray-50: #f9fafb;
+            --lgs-app-gray-100: #f3f4f6;
+            --lgs-app-gray-200: #e5e7eb;
+            --lgs-app-gray-300: #d1d5db;
+            --lgs-app-gray-600: #4b5563;
+            --lgs-app-gray-700: #374151;
+            --lgs-app-gray-900: #111827;
+            --lgs-app-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --lgs-app-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --lgs-app-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --lgs-app-border-radius: 8px;
+            --lgs-app-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
-
-        * {
+        #lgs-app * {
             box-sizing: border-box;
         }
-
-        body {
-            font-family: var(--font-family);
-            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+        #lgs-app {
+            font-family: var(--lgs-app-font-family);
+            background: linear-gradient(135deg, var(--lgs-app-gray-50) 0%, var(--lgs-app-gray-100) 100%);
             margin: 0;
             padding: 20px;
             line-height: 1.6;
-            color: var(--gray-900);
+            color: var(--lgs-app-gray-900);
             min-height: 100vh;
         }
-
-        .container {
+        #lgs-app .container {
             max-width: 900px;
             margin: 0 auto;
         }
-
-        .header {
+        #lgs-app .header {
             text-align: center;
             margin-bottom: 2rem;
         }
-
-        .header h1 {
+        #lgs-app .header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--lgs-app-primary-color);
             margin: 0 0 0.5rem 0;
         }
-
-        .header p {
+        #lgs-app .header p {
             font-size: 1.125rem;
-            color: var(--gray-600);
+            color: var(--lgs-app-gray-600);
             margin: 0;
         }
-
-        .calculator-card {
+        #lgs-app .calculator-card {
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--lgs-app-border-radius);
+            box-shadow: var(--lgs-app-shadow-lg);
             overflow: hidden;
         }
-
-        .card-header {
-            background: var(--primary-color);
+        #lgs-app .card-header {
+            background: var(--lgs-app-primary-color);
             color: white;
             padding: 1.5rem;
             text-align: center;
         }
-
-        .card-header h2 {
+        #lgs-app .card-header h2 {
             margin: 0;
             font-size: 1.5rem;
             font-weight: 600;
         }
-
-        .card-body {
+        #lgs-app .card-body {
             padding: 2rem;
         }
-
-        .form-group {
+        #lgs-app .form-group {
             margin-bottom: 1.5rem;
         }
-
-        .form-label {
+        #lgs-app .form-label {
             display: block;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--gray-700);
+            color: var(--lgs-app-gray-700);
             font-size: 1rem;
         }
-
-        .form-select {
+        #lgs-app .form-select {
             width: 100%;
             padding: 0.75rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--border-radius);
+            border: 2px solid var(--lgs-app-gray-200);
+            border-radius: var(--lgs-app-border-radius);
             font-size: 1rem;
             background: white;
             transition: border-color 0.2s ease;
         }
-
-        .form-select:focus {
+        #lgs-app .form-select:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--lgs-app-primary-color);
             box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
         }
-
-        .subjects-grid {
+        #lgs-app .subjects-grid {
             display: grid;
             gap: 1rem;
             margin: 2rem 0;
         }
-
-        .subject-card {
-            background: var(--gray-50);
-            border: 2px solid var(--gray-200);
-            border-radius: var(--border-radius);
+        #lgs-app .subject-card {
+            background: var(--lgs-app-gray-50);
+            border: 2px solid var(--lgs-app-gray-200);
+            border-radius: var(--lgs-app-border-radius);
             padding: 1.25rem;
             transition: all 0.2s ease;
         }
-
-        .subject-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-sm);
+        #lgs-app .subject-card:hover {
+            border-color: var(--lgs-app-primary-color);
+            box-shadow: var(--lgs-app-shadow-sm);
         }
-
-        .subject-header {
+        #lgs-app .subject-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
-
-        .subject-name {
+        #lgs-app .subject-name {
             font-weight: 600;
             font-size: 1.125rem;
-            color: var(--gray-900);
+            color: var(--lgs-app-gray-900);
         }
-
-        .subject-count {
-            background: var(--primary-color);
+        #lgs-app .subject-count {
+            background: var(--lgs-app-primary-color);
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 500;
         }
-
-        .subject-inputs {
+        #lgs-app .subject-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
-
-        .input-group {
+        #lgs-app .input-group {
             display: flex;
             flex-direction: column;
         }
-
-        .input-label {
+        #lgs-app .input-label {
             font-size: 0.875rem;
             font-weight: 500;
-            color: var(--gray-600);
+            color: var(--lgs-app-gray-600);
             margin-bottom: 0.25rem;
         }
-
-        .form-input {
+        #lgs-app .form-input {
             padding: 0.75rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--border-radius);
+            border: 2px solid var(--lgs-app-gray-200);
+            border-radius: var(--lgs-app-border-radius);
             font-size: 1rem;
             text-align: center;
             font-weight: 600;
             transition: all 0.2s ease;
         }
-
-        .form-input:focus {
+        #lgs-app .form-input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--lgs-app-primary-color);
             box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
         }
-
-        .form-input.error {
-            border-color: var(--error-color);
+        #lgs-app .form-input.error {
+            border-color: var(--lgs-app-error-color);
         }
-
-        .calculate-btn {
+        #lgs-app .calculate-btn {
             width: 100%;
-            background: var(--primary-color);
+            background: var(--lgs-app-primary-color);
             color: white;
             border: none;
             padding: 1rem 2rem;
             font-size: 1.125rem;
             font-weight: 600;
-            border-radius: var(--border-radius);
+            border-radius: var(--lgs-app-border-radius);
             cursor: pointer;
             transition: all 0.2s ease;
             margin-top: 2rem;
         }
-
-        .calculate-btn:hover:not(:disabled) {
-            background: var(--primary-hover);
+        #lgs-app .calculate-btn:hover:not(:disabled) {
+            background: var(--lgs-app-primary-hover);
             transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--lgs-app-shadow-md);
         }
-
-        .calculate-btn:disabled {
+        #lgs-app .calculate-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
-
-        .loading {
+        #lgs-app .loading {
             display: none;
             text-align: center;
             padding: 2rem;
         }
-
-        .loading.active {
+        #lgs-app .loading.active {
             display: block;
         }
-
-        .spinner {
+        #lgs-app .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid var(--gray-200);
-            border-top: 4px solid var(--primary-color);
+            border: 4px solid var(--lgs-app-gray-200);
+            border-top: 4px solid var(--lgs-app-primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
-
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
             }
-
             100% {
                 transform: rotate(360deg);
             }
         }
-
-        .alert {
+        #lgs-app .alert {
             padding: 1rem;
-            border-radius: var(--border-radius);
+            border-radius: var(--lgs-app-border-radius);
             margin: 1rem 0;
             font-weight: 500;
             display: none;
         }
-
-        .alert.active {
+        #lgs-app .alert.active {
             display: block;
         }
-
-        .alert-error {
+        #lgs-app .alert-error {
             background: #fef2f2;
-            color: var(--error-color);
+            color: var(--lgs-app-error-color);
             border: 1px solid #fecaca;
         }
-
-        .alert-warning {
+        #lgs-app .alert-warning {
             background: #fffbeb;
-            color: var(--warning-color);
+            color: var(--lgs-app-warning-color);
             border: 1px solid #fed7aa;
         }
-
-        .results {
+        #lgs-app .results {
             margin-top: 2rem;
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--lgs-app-border-radius);
+            box-shadow: var(--lgs-app-shadow-lg);
             overflow: hidden;
             display: none;
         }
-
-        .results.active {
+        #lgs-app .results.active {
             display: block;
         }
-
-        .results-header {
-            background: var(--success-color);
+        #lgs-app .results-header {
+            background: var(--lgs-app-success-color);
             color: white;
             padding: 1.5rem;
             text-align: center;
         }
-
-        .results-header h3 {
+        #lgs-app .results-header h3 {
             margin: 0 0 0.5rem 0;
             font-size: 1.5rem;
         }
-
-        .results-body {
+        #lgs-app .results-body {
             padding: 2rem;
         }
-
-        .results-grid {
+        #lgs-app .results-grid {
             display: grid;
             gap: 1rem;
             margin-bottom: 2rem;
         }
-
-        .result-item {
+        #lgs-app .result-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            background: var(--gray-50);
-            border-radius: var(--border-radius);
+            background: var(--lgs-app-gray-50);
+            border-radius: var(--lgs-app-border-radius);
         }
-
-        .result-label {
+        #lgs-app .result-label {
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--lgs-app-gray-700);
         }
-
-        .result-value {
+        #lgs-app .result-value {
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--lgs-app-primary-color);
             font-size: 1.125rem;
         }
-
-        .final-score {
-            background: var(--primary-color);
+        #lgs-app .final-score {
+            background: var(--lgs-app-primary-color);
             color: white;
             padding: 1.5rem;
-            border-radius: var(--border-radius);
+            border-radius: var(--lgs-app-border-radius);
             text-align: center;
             margin: 2rem 0;
         }
-
-        .final-score h4 {
+        #lgs-app .final-score h4 {
             margin: 0 0 0.5rem 0;
             font-size: 1.25rem;
         }
-
-        .final-score .score {
+        #lgs-app .final-score .score {
             font-size: 2.5rem;
             font-weight: 700;
             margin: 0;
         }
-
-        .percentile-section {
-            background: var(--gray-50);
+        #lgs-app .percentile-section {
+            background: var(--lgs-app-gray-50);
             padding: 1.5rem;
-            border-radius: var(--border-radius);
+            border-radius: var(--lgs-app-border-radius);
             margin-top: 1.5rem;
         }
-
-        .percentile-title {
+        #lgs-app .percentile-title {
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--lgs-app-gray-900);
             margin: 0 0 1rem 0;
         }
-
-        .disclaimer {
-            background: var(--warning-color);
+        #lgs-app .disclaimer {
+            background: var(--lgs-app-warning-color);
             color: white;
             padding: 1rem;
-            border-radius: var(--border-radius);
+            border-radius: var(--lgs-app-border-radius);
             margin-top: 1.5rem;
             font-size: 0.875rem;
         }
-
-        .disclaimer h5 {
+        #lgs-app .disclaimer h5 {
             margin: 0 0 0.5rem 0;
             font-size: 1rem;
         }
-
-        .disclaimer ul {
+        #lgs-app .disclaimer ul {
             margin: 0;
             padding-left: 1.25rem;
         }
-
-        .disclaimer li {
+        #lgs-app .disclaimer li {
             margin-bottom: 0.25rem;
         }
-
-        .results-years-grid {
+        #lgs-app .results-years-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
-        .results-year-block {
+        #lgs-app .results-year-block {
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--lgs-app-border-radius);
+            box-shadow: var(--lgs-app-shadow-lg);
             padding-bottom: 1rem;
             display: flex;
             flex-direction: column;
             min-width: 0;
         }
-
         @media (max-width: 900px) {
-            .results-years-grid {
+            #lgs-app .results-years-grid {
                 grid-template-columns: 1fr;
             }
         }
-
         @media (max-width: 768px) {
-            body {
+            #lgs-app body {
                 padding: 10px;
             }
-
-            .header h1 {
+            #lgs-app .header h1 {
                 font-size: 2rem;
             }
-
-            .card-body {
+            #lgs-app .card-body {
                 padding: 1.5rem;
             }
-
-            .subject-inputs {
+            #lgs-app .subject-inputs {
                 grid-template-columns: 1fr;
                 gap: 0.75rem;
             }
-
-            .results-body {
+            #lgs-app .results-body {
                 padding: 1.5rem;
             }
         }
-
-        .results-table-wrapper {
+        #lgs-app .results-table-wrapper {
             overflow-x: auto;
             margin-top: 2rem;
         }
-        .results-table {
+        #lgs-app .results-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--lgs-app-border-radius);
+            box-shadow: var(--lgs-app-shadow-lg);
             overflow: hidden;
             min-width: 600px;
         }
-        .results-table th, .results-table td {
+        #lgs-app .results-table th, #lgs-app .results-table td {
             padding: 1rem;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--lgs-app-gray-200);
             text-align: center;
             font-size: 1rem;
         }
-        .results-table th {
-            background: var(--primary-color);
+        #lgs-app .results-table th {
+            background: var(--lgs-app-primary-color);
             color: white;
             font-weight: 700;
         }
-        .results-table tr:last-child td {
+        #lgs-app .results-table tr:last-child td {
             border-bottom: none;
         }
-        .results-table td:first-child, .results-table th:first-child {
+        #lgs-app .results-table td:first-child, #lgs-app .results-table th:first-child {
             text-align: left;
-            background: var(--gray-50);
-            color: var(--gray-900);
+            background: var(--lgs-app-gray-50);
+            color: var(--lgs-app-gray-900);
             font-weight: 600;
         }
         @media (max-width: 900px) {
-            .results-table {
+            #lgs-app .results-table {
                 min-width: 400px;
                 font-size: 0.95rem;
             }
         }
-
-        .subjects-table-wrapper {
+        #lgs-app .subjects-table-wrapper {
             overflow-x: auto;
             margin-bottom: 2rem;
         }
-        .subjects-table {
+        #lgs-app .subjects-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
+            border-radius: var(--lgs-app-border-radius);
+            box-shadow: var(--lgs-app-shadow-md);
             overflow: hidden;
             min-width: 400px;
         }
-        .subjects-table th, .subjects-table td {
+        #lgs-app .subjects-table th, #lgs-app .subjects-table td {
             padding: 0.75rem;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--lgs-app-gray-200);
             text-align: center;
             font-size: 1rem;
         }
-        .subjects-table th {
-            background: var(--primary-color);
+        #lgs-app .subjects-table th {
+            background: var(--lgs-app-primary-color);
             color: white;
             font-weight: 700;
         }
-        .subjects-table tr:last-child td {
+        #lgs-app .subjects-table tr:last-child td {
             border-bottom: none;
         }
-        .subjects-table td:first-child, .subjects-table th:first-child {
+        #lgs-app .subjects-table td:first-child, #lgs-app .subjects-table th:first-child {
             text-align: left;
-            background: var(--gray-50);
-            color: var(--gray-900);
+            background: var(--lgs-app-gray-50);
+            color: var(--lgs-app-gray-900);
             font-weight: 600;
         }
         @media (max-width: 900px) {
-            .subjects-table {
+            #lgs-app .subjects-table {
                 min-width: 320px;
                 font-size: 0.95rem;
             }
         }
-
-        .results-summary {
+        #lgs-app .results-summary {
             display: flex;
             gap: 2rem;
             justify-content: flex-start;
             align-items: center;
-            background: var(--gray-50);
-            border-radius: var(--border-radius);
+            background: var(--lgs-app-gray-50);
+            border-radius: var(--lgs-app-border-radius);
             padding: 1rem 1.5rem;
             margin-bottom: 1.5rem;
             font-size: 1.1rem;
             font-weight: 600;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--lgs-app-shadow-sm);
         }
-        .results-summary span {
+        #lgs-app .results-summary span {
             flex: 1;
             text-align: center;
         }
         @media (max-width: 600px) {
-            .results-summary {
+            #lgs-app .results-summary {
                 flex-direction: column;
                 gap: 0.5rem;
                 font-size: 1rem;
                 padding: 0.75rem 0.5rem;
             }
-            .results-summary span {
+            #lgs-app .results-summary span {
                 text-align: left;
                 width: 100%;
             }
+        }
+        #lgs-app h2,
+        #lgs-app h3,
+        #lgs-app h4,
+        #lgs-app h5,
+        #lgs-app h6 {
+            color: #fff !important;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>LGS Puan Hesaplayıcı</h1>
-            <p>Liselere Geçiş Sınavı puan hesaplama ve yüzdelik dilim belirleme aracı</p>
-        </header>
+    <div id="lgs-app">
+        <div class="container">
+            <header class="header">
+                <h1>LGS Puan Hesaplayıcı</h1>
+                <p>Liselere Geçiş Sınavı puan hesaplama ve yüzdelik dilim belirleme aracı</p>
+            </header>
 
-        <main class="calculator-card">
-            <div class="card-header">
-                <h2>Sınav Bilgilerinizi Girin</h2>
-            </div>
-
-            <div class="card-body">
-                <form id="lgsForm">
-                    <div class="subjects-grid" id="subjectsGrid">
-                        <!-- Subjects will be dynamically generated -->
-                    </div>
-
-                    <button type="submit" class="calculate-btn" id="calculateBtn">
-                        Puanı Hesapla
-                    </button>
-                </form>
-
-                <div id="loading" class="loading">
-                    <div class="spinner"></div>
-                    <p>Puanınız hesaplanıyor...</p>
+            <main class="calculator-card">
+                <div class="card-header">
+                    <h2>Sınav Bilgilerinizi Girin</h2>
                 </div>
 
-                <div id="alertContainer"></div>
-            </div>
-        </main>
+                <div class="card-body">
+                    <form id="lgsForm">
+                        <div class="subjects-grid" id="subjectsGrid">
+                            <!-- Subjects will be dynamically generated -->
+                        </div>
 
-        <div id="results" class="results">
-            <div class="results-header">
-                <h3>LGS Puan Sonuçlarınız</h3>
-                <p>Detaylı analiz ve yüzdelik dilim bilgileriniz</p>
-            </div>
-            <div class="results-body" id="resultsBody">
-                <!-- Results will be dynamically generated -->
+                        <button type="submit" class="calculate-btn" id="calculateBtn">
+                            Puanı Hesapla
+                        </button>
+                    </form>
+
+                    <div id="loading" class="loading">
+                        <div class="spinner"></div>
+                        <p>Puanınız hesaplanıyor...</p>
+                    </div>
+
+                    <div id="alertContainer"></div>
+                </div>
+            </main>
+
+            <div id="results" class="results">
+                <div class="results-header">
+                    <h3>LGS Puan Sonuçlarınız</h3>
+                    <p>Detaylı analiz ve yüzdelik dilim bilgileriniz</p>
+                </div>
+                <div class="results-body" id="resultsBody">
+                    <!-- Results will be dynamically generated -->
+                </div>
             </div>
         </div>
     </div>

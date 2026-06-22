@@ -720,7 +720,7 @@
                 for (const subject of this.subjects) {
                     html += `<tr>
                         <td>${subject.name}</td>
-                        <td><input type="number" class="form-input subject-correct" id="${subject.id}Correct" min="0" max="${subject.questions}" value="${subject.questions}" data-subject="${subject.id}" data-type="correct" readonly tabindex="-1" style="background:#f3f4f6;cursor:not-allowed;"></td>
+                        <td><input type="number" class="form-input subject-correct" id="${subject.id}Correct" min="0" max="${subject.questions}" value="${subject.questions}" data-subject="${subject.id}" data-type="correct" readonly tabindex="-1" title="Sadece yanlış ve boş sayılarını giriniz; doğru otomatik hesaplanır." style="background:var(--lgs-app-error-color);color:#fff;font-weight:700;border-color:var(--lgs-app-error-color);cursor:help;"></td>
                         <td><input type="number" class="form-input subject-wrong" id="${subject.id}Wrong" min="0" max="${subject.questions}" value="0" data-subject="${subject.id}" data-type="wrong" required></td>
                         <td><input type="number" class="form-input subject-blank" id="${subject.id}Blank" min="0" max="${subject.questions}" value="0" data-subject="${subject.id}" data-type="blank" required></td>
                     </tr>`;

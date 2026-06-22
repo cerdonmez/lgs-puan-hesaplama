@@ -471,20 +471,25 @@
 }
 @media (max-width: 600px) {
     #lgs-app .subjects-table-wrapper {
-        padding: 0 0.5rem;
+        padding: 0;
         overflow-x: auto;
     }
     #lgs-app .subjects-table {
-        min-width: 320px;
-        font-size: 0.92rem;
+        min-width: 0;
+        width: 100%;
+        font-size: 0.88rem;
     }
     #lgs-app .subjects-table th,
     #lgs-app .subjects-table td {
-        padding: 0.5rem 0.25rem;
-        font-size: 0.92rem;
+        padding: 0.5rem 0.15rem;
+        font-size: 0.88rem;
+    }
+    #lgs-app .subjects-table td:first-child,
+    #lgs-app .subjects-table th:first-child {
+        padding-left: 0.5rem;
     }
     #lgs-app .card-body {
-        padding: 1rem 0.5rem;
+        padding: 1rem 0.25rem;
     }
     #lgs-app .header {
         padding: 0.5rem 0.25rem;
@@ -493,8 +498,10 @@
         padding: 0;
     }
     #lgs-app .form-input {
-        padding: 0.5rem;
-        font-size: 0.95rem;
+        padding: 0.4rem 0.15rem;
+        font-size: 0.9rem;
+        width: 100%;
+        min-width: 0;
     }
     #lgs-app .calculate-btn {
         font-size: 1rem;
